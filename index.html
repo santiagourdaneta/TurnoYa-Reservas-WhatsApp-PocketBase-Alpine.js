@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurnoYa | Reservas y Pedidos por WhatsApp</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body x-data="{ content: {}, loaded: false }" 
+      x-init="
+        try {
+            const res = await fetch('https://gato88-turnoya-api.hf.space/api/collections/config/records');
+            const data = await res.json();
+            content = data.items[0];
+            loaded = true;
+        } catch (e) { console.error('Error de conexión con el inframundo digital'); }
+      ">
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🟠</span>
+                <span class="logo-text">TurnoYa</span>
+            </a>
+            <a :href="'https://wa.me/' + content.whatsapp" class="nav-btn-alt">Contacto</a>
+        </div>
+    </nav>
+
+    <main x-show="loaded" x-transition.opacity.duration.500ms>
+        
+        <header class="hero">
+            <h1 x-text="content.nombre_negocio || 'TurnoYa'"></h1>
+            <p class="subheadline" x-text="content.lema"></p>
+            
+            <div class="cta-wrapper">
+                <a :href="'https://wa.me/' + content.link_whatsapp" class="btn-main">
+                    Reservar Turno por WhatsApp
+                </a>
+                <p class="cta-note">⚡ Sin apps. Sin registros. Respuesta inmediata.</p>
+            </div>
+        </header>
+
+        <section class="features">
+            <div class="feature-card">
+                <span class="feat-icon">📅</span>
+                <h3>Citas Ordenadas</h3>
+                <p>Adiós al desorden en tu agenda. Todo centralizado en tu chat.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feat-icon">💬</span>
+                <h3>Sin Mensajes Perdidos</h3>
+                <p>Estructura tus pedidos para que no se te escape ni una venta.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feat-icon">⏱️</span>
+                <h3>Ahorra Tiempo</h3>
+                <p>Tus clientes reservan solos, tú solo confirmas.</p>
+            </div>
+        </section>
+
+        <footer class="trust-footer">
+            <div class="garantia-box">
+                <h4>🛡️ Garantía de Simplicidad</h4>
+                <p>Si no es el sistema más fácil que has usado, te ayudamos a configurarlo gratis.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TurnoYa. Tecnología para negocios locales.</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <template x-if="!loaded">
+        <div class="loader">
+            <p>Conectando con el sistema...</p>
+        </div>
+    </template>
+
+</body>
+</html>

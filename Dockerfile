@@ -1,0 +1,16 @@
+FROM alpine:latest
+
+ARG PB_VERSION=0.22.0
+
+RUN apk add --no-cache \
+    unzip \
+    ca-certificates
+
+# Descargar PocketBase
+ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
+RUN unzip /tmp/pb.zip -d /pb/
+
+EXPOSE 7860
+
+# Comando para ejecutar con persistencia en el puerto de HF
+CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:7860"]
