@@ -14,14 +14,18 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body x-data="{ content: {}, loaded: false }" 
-      x-init="
+      x-init="(async () => {
         try {
             const res = await fetch('https://gato88-turnoya-api.hf.space/api/collections/config/records');
             const data = await res.json();
-            content = data.items[0];
+            if (data.items && data.items.length > 0) {
+                content = data.items[0];
+            }
             loaded = true;
-        } catch (e) { console.error('Error de conexión con el inframundo digital'); }
-      ">
+        } catch (e) { 
+            console.error('Error de conexión:', e); 
+        }
+      })()">
 
     <nav class="navbar">
         <div class="nav-container">
